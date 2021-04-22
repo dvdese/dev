@@ -46,6 +46,7 @@ export const LiquityFrontend: React.FC<LiquityFrontendProps> = ({ loader }) => {
           <StabilityViewProvider>
             <StakingViewProvider>
               <FarmViewProvider>
+              <NotificationViewProvider>
                 <Flex sx={{ flexDirection: "column", minHeight: "100%" }}>
                   <Header>
                     <UserAccount />
@@ -77,6 +78,7 @@ export const LiquityFrontend: React.FC<LiquityFrontendProps> = ({ loader }) => {
                     </Switch>
                   </Container>
                 </Flex>
+              </NotificationViewProvider>
               </FarmViewProvider>
             </StakingViewProvider>
           </StabilityViewProvider>
