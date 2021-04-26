@@ -4,6 +4,7 @@ import { useNotificationView } from "./context/NotificationViewContext";
 import { InfoIcon } from "../InfoIcon";
 import React, { useCallback } from 'react';
 import { NoNotification } from "./NoNotification";
+import { Icon } from "../Icon";
 
 
 type NotificationFeedbackProps = {
@@ -26,22 +27,16 @@ export const NotificationFeedback: React.FC<NotificationFeedbackProps> = ({
    dispatchEvent("EDIT_NOTIFICATION_PRESSED");
   }, [dispatchEvent]);
 
-  setTimeout(() => {dispatchEvent("CANCEL_NOTIFICATION_PRESSED")}, 3000);
+  setTimeout(() => {dispatchEvent("CANCEL_NOTIFICATION_PRESSED")}, 5000);
 
   return (
     <Card>
       <Heading>Notifications
-      <InfoIcon
-            tooltip={
-              <Card variant="tooltip">
-                Select which notification alerts doy you want to receive in your email
-              </Card>
-            }
-          />
       </Heading>
       <Box sx={{ p: [2, 3] }}>
 
         <InfoMessage title="Click to configure your notification alerts.">
+            Keep having fun directly in your Inbox.
         </InfoMessage>
 
         <Flex variant="layout.actions">
@@ -56,11 +51,13 @@ export const NotificationFeedback: React.FC<NotificationFeedbackProps> = ({
             p: 3,
             pl: 4,
             overflow: "hidden",
+            borderRadius: "8px",
           }}
             >
-          <Text sx={{ fontSize: 3, color: "white" }}>
-            { isSubmit ? "Alerts configuration succeed!" : "Alerts configuration failed!"}
-          </Text>
+            { isSubmit ? <Icon name="check" color="white" size="sm" /> : <Icon name="times" color="white" size="sm" />}
+            <Text sx={{ fontSize: 2, color: "white" , marginLeft:"10px" }}>
+            { isSubmit ? "You will receive a confirmation email shortly!!":"Alerts configuration failed!"}
+            </Text>
       </Flex>
     </Card>
   );

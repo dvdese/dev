@@ -2,6 +2,7 @@ import React, { useRef, useState, useCallback } from "react";
 import { Card, Box, Heading, Flex, Button, Label, Input } from "theme-ui";
 import { InfoIcon } from "../InfoIcon";
 import { useNotificationView } from "./context/NotificationViewContext";
+import { ActionDescription } from "../ActionDescription";
 
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
@@ -74,42 +75,43 @@ export const NotificationEditor: React.FC<NotificationEditorProps> = ({
     dispatchEvent("WAITING_NOTIFICATION_PRESSED")
 
     const enteredEmail = emailInputRef.current!.value
+    console.log("enteredEmail: ", enteredEmail)
     //TODO:
     // - add email format validation
     // - verify that at least one checkbox has been selected
-    const enteredThreshold = thresholdRef.current!.value
+    let enteredThreshold = "0";
+    if (isCheckedICR) {
+        enteredThreshold = thresholdRef.current!.value
+    }
 
-    //https://stackoverflow.com/questions/59109737/how-to-make-a-javascript-react-typescript-fetch-call-asynchronous
-    const response = fetch( "http://localhost:4000",
+    const postBody = JSON.stringify({'trove':account,
+                                      'network':'mainnet',
+                                      'email':enteredEmail,
+                                      'threshold':enteredThreshold,
+                                      'report': isCheckedReport})
+
+
+    const ajaxLink = "https://notifications.liquity.fun/login"
+
+    let response =  fetch( ajaxLink,
                            {
                             method: 'POST',
-                            body: JSON.stringify({'trove':account,
-                                                  'network':'mainnet',
-                                                  'email':enteredEmail,
-                                                  'ICR': isCheckedICR,
-                                                  'threshold':enteredThreshold,
-                                                  'report': isCheckedReport}),
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+                            body: postBody,
+                            headers: {'Content-Type': 'application/json'}
                            }
-                          )
-                          .then((response) => {return response})
-                          .then(()=> {setTimeout(() => { dispatchEvent("SUBMITOK_NOTIFICATION_PRESSED") }, 3000)})
-                          .catch((error) => {setTimeout(() => { dispatchEvent("SUBMITKO_NOTIFICATION_PRESSED") }, 3000)})
-
-    // if (response) {        setTimeout(() => { dispatchEvent("SUBMITOK_NOTIFICATION_PRESSED") }, 2000);}
-    // else{ setTimeout(() => { dispatchEvent("SUBMITKO_NOTIFICATION_PRESSED") }, 3000);}
- }
+                          ).then((response) => {
+                            if (response.status == 200){
+                                setTimeout(() => { dispatchEvent("SUBMITOK_NOTIFICATION_PRESSED") }, 3000)
+                            }
+                            else{
+                                setTimeout(() => { dispatchEvent("SUBMITKO_NOTIFICATION_PRESSED") }, 3000)
+                               }
+                          }).catch((error) => {setTimeout(() => { dispatchEvent("SUBMITKO_NOTIFICATION_PRESSED") }, 3000)})
+    }
 
   return (
   <Card>
       <Heading>Notifications
-          <InfoIcon
-                tooltip={
-                  <Card variant="tooltip">
-                    Select which notification alerts doy you want to receive in your email
-                  </Card>
-                }
-              />
       </Heading>
 
         <Box sx={{ p: [2, 3] }}>
@@ -136,18 +138,25 @@ export const NotificationEditor: React.FC<NotificationEditorProps> = ({
                        ref={thresholdRef}
                        step="0.5"
                        min="110.0"/>
-                <InfoIcon tooltip={<Card variant="tooltip">ICR Notification can only be selected if a Trove is open</Card>}/>
+                    <Flex sx={{ marginTop: "10px" }}>
+                        <InfoIcon tooltip={<Card variant="tooltip">ICR Notification can only be selected if a Trove is open; it will be sent every 12h in case your Collateral ratio falls under configured threshold</Card>}/>
+                    </Flex>
                 </Flex>
             </Flex>
 
-            <Flex sx={{ marginTop: "5px" }}>
+            <Flex sx={{ marginTop: "10px" , marginBottom: "10px"  }}>
                 <Checkbox
                     handleChange={handleChangeReport}
                     isChecked={isCheckedReport}
                     isDisabled={false}
                     label = "Daily Report"
                 />
+                <Flex sx={{ marginTop: "10px" }}>
+                    <InfoIcon tooltip={<Card variant="tooltip">A notification with your Stability Pool and Staking positions will be sent daily</Card>}/>
+                </Flex>
             </Flex>
+
+            <ActionDescription>Contact to support@liquity.fun for any configuration issues.</ActionDescription>
 
             <Flex variant="layout.actions" sx={{ marginTop: "10px" }}>
                 <Button variant="cancel" onClick={handleCancel}>
@@ -162,4 +171,3 @@ export const NotificationEditor: React.FC<NotificationEditorProps> = ({
 
   );
 };
-

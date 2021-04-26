@@ -15,17 +15,11 @@ export const NoNotification: React.FC = props => {
   return (
     <Card>
       <Heading>Notifications
-      <InfoIcon
-            tooltip={
-              <Card variant="tooltip">
-                Select which notification alerts doy you want to receive in your email
-              </Card>
-            }
-          />
       </Heading>
       <Box sx={{ p: [2, 3] }}>
 
         <InfoMessage title="Click to configure your notification alerts.">
+            Keep having fun directly in your Inbox.
         </InfoMessage>
 
         <Flex variant="layout.actions">

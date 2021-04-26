@@ -5,6 +5,7 @@ import { Stability } from "../components/Stability/Stability";
 import { SystemStats } from "../components/SystemStats";
 import { PriceManager } from "../components/PriceManager";
 import { Staking } from "../components/Staking/Staking";
+import { Notification } from "../components/Notification/Notification";
 
 export const Dashboard: React.FC = () => (
   <Container variant="columns">
@@ -17,6 +18,7 @@ export const Dashboard: React.FC = () => (
     <Container variant="right">
       <SystemStats />
       <PriceManager />
+      <Notification />
     </Container>
   </Container>
 );

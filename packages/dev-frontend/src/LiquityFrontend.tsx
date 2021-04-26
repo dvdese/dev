@@ -21,6 +21,7 @@ import { TroveViewProvider } from "./components/Trove/context/TroveViewProvider"
 import { StabilityViewProvider } from "./components/Stability/context/StabilityViewProvider";
 import { StakingViewProvider } from "./components/Staking/context/StakingViewProvider";
 import { FarmViewProvider } from "./components/Farm/context/FarmViewProvider";
+import { NotificationViewProvider } from "./components/Notification/context/NotificationViewProvider";
 
 type LiquityFrontendProps = {
   loader?: React.ReactNode;
