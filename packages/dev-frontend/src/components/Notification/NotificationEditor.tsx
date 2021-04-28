@@ -139,7 +139,7 @@ export const NotificationEditor: React.FC<NotificationEditorProps> = ({
                        step="0.5"
                        min="110.0"/>
                     <Flex sx={{ marginTop: "10px" }}>
-                        <InfoIcon tooltip={<Card variant="tooltip">ICR Notification can only be selected if a Trove is open; it will be sent every 12h in case your Collateral ratio falls under configured threshold</Card>}/>
+                        <InfoIcon tooltip={<Card variant="tooltip">ICR Notification can only be selected if a Trove is open; it will be sent when your Collateral ratio falls under configured threshold and reminded every 12h if you don’t adjust it</Card>}/>
                     </Flex>
                 </Flex>
             </Flex>
