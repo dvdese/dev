@@ -236,6 +236,14 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                   <br />
                   Ratio
                 </th>
+                <th>
+                  <Abbreviation short="Thres.">Liquidation <br /> Price </Abbreviation>
+                  <Box sx={{ fontSize: [0, 1], fontWeight: "body", opacity: 0.5 }}>$</Box>
+                </th>
+                <th>
+                  <Abbreviation short="Thres.">Potential <br /> profit</Abbreviation>
+                  <Box sx={{ fontSize: [0, 1], fontWeight: "body", opacity: 0.5 }}>LUSD</Box>
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -314,6 +322,16 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                             {new Percent(collateralRatio).prettify()}
                           </Text>
                         ))(trove.collateralRatio(price))}
+                      </td>
+                      <td>
+                        <Abbreviation short={trove.debt.div(trove.collateral).div(1.1).shorten()}>
+                          {trove.debt.div(trove.collateral).div(1.1).prettify()}
+                        </Abbreviation>
+                      </td>
+                      <td>
+                        <Abbreviation short={trove.debt.mul(0.0945).shorten()}>
+                          {trove.debt.mul(0.0945).prettify()}
+                        </Abbreviation>
                       </td>
                       <td>
                         <Transaction

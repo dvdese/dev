@@ -4,6 +4,8 @@ import { SystemStats } from "../components/SystemStats";
 import { LiquidationManager } from "../components/LiquidationManager";
 import { RiskyTroves } from "../components/RiskyTroves";
 import { InfoMessage } from "../components/InfoMessage";
+import { PriceManager } from "../components/PriceManager";
+
 
 export const RiskyTrovesPage: React.FC = () => (
   <Container variant="columns">
@@ -24,6 +26,7 @@ export const RiskyTrovesPage: React.FC = () => (
 
     <Container variant="right">
       <SystemStats />
+      <PriceManager />
     </Container>
     <RiskyTroves pageSize={10} />
   </Container>
