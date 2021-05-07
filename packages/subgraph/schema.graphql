@@ -20,6 +20,11 @@ type Global @entity {
   numberOfActiveLQTYStakes: Int!
   totalLQTYTokensStaked: BigDecimal!
 
+  "Total amount of LUSD paid as borrowing fees"
+  totalBorrowingFeesPaid: BigDecimal!
+  "Total amount of ETH paid as redemption fees"
+  totalRedemptionFeesPaid: BigDecimal!
+
   "Total redistributed per-stake collateral"
   rawTotalRedistributedCollateral: BigInt!
 
@@ -70,6 +75,9 @@ type User @entity {
 
   liquidations: [Liquidation!]! @derivedFrom(field: "liquidator")
   redemptions: [Redemption!]! @derivedFrom(field: "redeemer")
+
+  balances: [TokenBalance!] @derivedFrom(field: "owner")
+  allowances: [TokenAllowance!] @derivedFrom(field: "owner")
 }
 
 enum TroveStatus {
@@ -173,6 +181,8 @@ type TroveChange implements Change @entity {
   debtChange: BigDecimal!
   debtAfter: BigDecimal!
 
+  borrowingFee: BigDecimal
+
   collateralRatioBefore: BigDecimal
   collateralRatioAfter: BigDecimal
 
@@ -238,6 +248,8 @@ type Redemption @entity {
   collateralRedeemed: BigDecimal!
   partial: Boolean!
 
+  fee: BigDecimal!
+
   troveChanges: [TroveChange!]! @derivedFrom(field: "redemption")
 }
 
@@ -284,6 +296,30 @@ type LqtyStakeChange implements Change @entity {
   amountChange: BigDecimal!
   amountAfter: BigDecimal!
 
-  issuanceGain: BigDecimal
-  redemptionGain: BigDecimal
+  issuanceGain: BigDecimal!
+  redemptionGain: BigDecimal!
+}
+
+type Token @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  totalSupply: BigInt!
+  balances: [TokenBalance!] @derivedFrom(field: "token")
+  allowances: [TokenAllowance!] @derivedFrom(field: "token")
+}
+
+type TokenBalance @entity {
+  id: ID!
+  token: Token!
+  owner: User!
+  balance: BigInt!
+}
+
+type TokenAllowance @entity {
+  id: ID!
+  token: Token!
+  owner: User!
+  spender: User!
+  value: BigInt!
 }

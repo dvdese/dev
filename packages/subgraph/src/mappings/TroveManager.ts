@@ -4,18 +4,8 @@ import {
   TroveLiquidated,
   Liquidation,
   Redemption,
-  BorrowerOperationsAddressChanged,
-  StabilityPoolAddressChanged,
-  CollSurplusPoolAddressChanged,
-  PriceFeedAddressChanged,
-  LQTYStakingAddressChanged
+  PriceFeedAddressChanged
 } from "../../generated/TroveManager/TroveManager";
-import {
-  BorrowerOperations,
-  StabilityPool,
-  CollSurplusPool,
-  LQTYStaking
-} from "../../generated/templates";
 
 import { BIGINT_ZERO } from "../utils/bignumbers";
 
@@ -25,24 +15,6 @@ import { finishCurrentLiquidation } from "../entities/Liquidation";
 import { finishCurrentRedemption } from "../entities/Redemption";
 import { updateTrove } from "../entities/Trove";
 import { updatePriceFeedAddress, updateTotalRedistributed } from "../entities/Global";
-
-export function handleBorrowerOperationsAddressChanged(
-  event: BorrowerOperationsAddressChanged
-): void {
-  BorrowerOperations.create(event.params._newBorrowerOperationsAddress);
-}
-
-export function handleStabilityPoolAddressChanged(event: StabilityPoolAddressChanged): void {
-  StabilityPool.create(event.params._stabilityPoolAddress);
-}
-
-export function handleCollSurplusPoolAddressChanged(event: CollSurplusPoolAddressChanged): void {
-  CollSurplusPool.create(event.params._collSurplusPoolAddress);
-}
-
-export function handleLQTYStakingAddressChanged(event: LQTYStakingAddressChanged): void {
-  LQTYStaking.create(event.params._lqtyStakingAddress);
-}
 
 export function handlePriceFeedAddressChanged(event: PriceFeedAddressChanged): void {
   updatePriceFeedAddress(event.params._newPriceFeedAddress);
@@ -107,6 +79,7 @@ export function handleRedemption(event: Redemption): void {
     event,
     event.params._attemptedLUSDAmount,
     event.params._actualLUSDAmount,
-    event.params._ETHSent
+    event.params._ETHSent,
+    event.params._ETHFee
   );
 }
